@@ -67,29 +67,19 @@ void stableMarriage(int prefer[2 * N][N]) {
       int w = prefer[m][i];
 
       // The woman of preference is free, w and m become partners.
-
       // So we can say they are engaged not married
 
-      if (wPartner[w - N] == -1)
-
-      {
+      if (wPartner[w - N] == -1) {
         wPartner[w - N] = m;
-
         mFree[m] = true;
-
         freeCount--;
-
-      }
-
-      else  // If w is not free
-
-      {
+      } else {
+        // If w is not free
         // Find current engagement of w
 
         int m1 = wPartner[w - N];
 
         // If w prefers m over her current engagement m1,
-
         // then break the engagement between w and m1 and engage m with w.
 
         if (wPrefersM1OverM(prefer, w, m, m1) == false)
