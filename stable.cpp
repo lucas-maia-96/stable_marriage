@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+using namespace std;
+
 // Number of Men or Women
 
 #define N 4
