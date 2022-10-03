@@ -1,4 +1,7 @@
+#include <string.h>
 #include <iostream>
+
+#include <stdio.h>
 
 // Number of Men or Women
 
