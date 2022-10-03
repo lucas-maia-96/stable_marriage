@@ -1,7 +1,4 @@
-#include <string.h>
 #include <iostream>
-
-#include <stdio.h>
 
 using namespace std;
 
@@ -11,20 +8,24 @@ using namespace std;
 
 // This function returns true if woman 'w' prefers man 'm1' over man 'm'
 
-bool wPrefersM1OverM(int prefer[2 * N][N], int w, int m, int m1) {
-  // Check if w prefers m over her current engagment m1
+bool w_prefer_mATUAL_over_mNOVO(int prefer[2 * N][N],
+                                int w,
+                                int mATUAL,
+                                int mNOVO) {
+  // Check if w prefers mNOVO over her current engagment m1ATUAL
 
   for (int i = 0; i < N; i++) {
-    // If m1 comes before m in the list of w,
+    // If mATUAL comes before mNOVO in the list of w,
     // then w prefers her current engagement, don't do anything
 
-    if (prefer[w][i] == m1)
+    if (prefer[w][i] == mATUAL)
+
       return true;
 
-    // If m cmes before m1 in w's list, then free her current
+    // If mNOVO cmes before mATUAL in w's list, then free her current
     // engagement and engage her with m
 
-    if (prefer[w][i] == m)
+    if (prefer[w][i] == mNOVO)
       return false;
   }
 }
@@ -33,14 +34,16 @@ bool wPrefersM1OverM(int prefer[2 * N][N], int w, int m, int m1) {
 // Girls are numbered as N to 2N-1.
 
 void stableMarriage(int prefer[2 * N][N]) {
-  /* Stores partner of women. This is our output array that stores information.
+  /*
+   Stores partner of women. This is our output array that stores information.
    The value of wPartner[I] indicates the partner assigned to woman N+i.
    Note that the woman numbers between N and 2*N-1.
-   The value -1 indicates that (N+i)'th woman is free */
+   The value -1 indicates that (N+i)'th woman is free
+  */
 
   int wPartner[N];
 
-  // An array to store availability of men. If mFree[i] is false,
+  // An array to store availability of men. If mFree[i] is true,
   // then man 'i' is free, otherwise engaged.
 
   bool mFree[N];
@@ -49,7 +52,7 @@ void stableMarriage(int prefer[2 * N][N]) {
 
   for (int i = 0; i < N; i++) {
     wPartner[i] = -1;
-    mFree[i] = false;
+    mFree[i] = true;
   }
 
   int freeCount = N;
@@ -62,13 +65,15 @@ void stableMarriage(int prefer[2 * N][N]) {
     int m;
 
     for (m = 0; m < N; m++)
-      if (mFree[m] == false)
+
+      if (mFree[m] == true)
+
         break;
 
     // One by one go to all women according to m's preferences.
     // Here m is the picked free man
 
-    for (int i = 0; i < N && mFree[m] == false; i++) {
+    for (int i = 0; i < N && mFree[m] == true; i++) {
       int w = prefer[m][i];
 
       // The woman of preference is free, w and m become partners.
@@ -76,10 +81,14 @@ void stableMarriage(int prefer[2 * N][N]) {
 
       if (wPartner[w - N] == -1) {
         wPartner[w - N] = m;
-        mFree[m] = true;
+
+        mFree[m] = false;
+
         freeCount--;
-      } else {
-        // If w is not free
+      }
+
+      else  // If w is not free
+      {
         // Find current engagement of w
 
         int m1 = wPartner[w - N];
@@ -87,35 +96,29 @@ void stableMarriage(int prefer[2 * N][N]) {
         // If w prefers m over her current engagement m1,
         // then break the engagement between w and m1 and engage m with w.
 
-        if (wPrefersM1OverM(prefer, w, m, m1) == false)
-
-        {
+        if (w_prefer_mATUAL_over_mNOVO(prefer, w, m1, m) == false) {
           wPartner[w - N] = m;
 
-          mFree[m] = true;
+          mFree[m] = false;
 
-          mFree[m1] = false;
+          mFree[m1] = true;
         }
       }
 
     }  // End of the for loop that goes to all women in m's list
-
-  }  // End of the main while loop
+  }    // End of the main while loop
 
   // Print the solution
 
-  std::cout << "Woman   Man" << std::endl;
+  cout << "Woman   Man" << endl;
 
   for (int i = 0; i < N; i++)
-
-    std::cout << " " << i + N << "\t" << wPartner[i] << std::endl;
+    cout << " " << i + N << "\t" << wPartner[i] << endl;
 }
 
 // Driver program to test above functions
 
-int main()
-
-{
+int main() {
   int prefer[2 * N][N] = {
       {7, 5, 6, 4},
 
@@ -132,7 +135,6 @@ int main()
       {0, 1, 2, 3},
 
       {0, 1, 2, 3},
-
   };
 
   stableMarriage(prefer);
